@@ -10,8 +10,54 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>hello-world</artifactId>
+    <artifactId>perderim</artifactId>
     <packaging>war</packaging>
+	
+	<build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <warSourceDirectory>WebContent</warSourceDirectory>
+                    <outputDirectory>/tmp</outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+	
+	 <profiles>
+        <profile>
+            <id>cloud-integration-tests</id>
+            <build>
+            <finalName>${sap.cloud.app}</finalName>
+                <plugins>
+                    <plugin>
+                    <groupId>org.cloudfoundry</groupId>
+                    <artifactId>cf-maven-plugin</artifactId>
+                    <version>1.0.4</version>
+                    <configuration>
+                        <target>${sap.cloud.api}</target>
+                        <username>${sap.cloud.username}</username>
+                        <password>${sap.cloud.password}</password>
+                        <space>${sap.cloud.space}</space>
+                        <org>${sap.cloud.org}</org>
+                        <appname>perderim</appname>
+                    </configuration>
+                    <executions>					
+                        <execution>
+                        <id>deploying-application</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                        </execution>
+                    </executions>  		 			  
+                    </plugin>  		 			
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <description>This is a simple HelloWorld Web application.</description>
     <licenses>
