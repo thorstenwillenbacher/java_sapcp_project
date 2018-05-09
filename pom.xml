@@ -454,6 +454,11 @@
             <properties>
                 <!-- Set default Oracle HTTPS port in case none is defined as profile gets activated on HTTPS host only -->
                 <https.proxyPort>443</https.proxyPort>
+				<sap.cloud.api>${env.CF_API}</sap.cloud.api>
+				<sap.cloud.org>${env.CF_ORGANIZATION}</sap.cloud.org>
+				<sap.cloud.space>${env.CF_SPACE}</sap.cloud.space>
+				<sap.cloud.username>${env.CF_USERNAME}</sap.cloud.username>
+				<sap.cloud.password>${env.CF_PASSWORD}</sap.cloud.password>
             </properties>
             <build>
                 <pluginManagement>

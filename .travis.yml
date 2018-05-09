@@ -1,3 +1,17 @@
-sudo: false
+sudo: required
 language: java
 jdk: oraclejdk8
+env:
+  global:
+  - CXX=g++-4.8
+  - CF_APP=hello-world
+  - secure: Elme5xeZvCSRWk6pcJpOxoWABA2myFyZNSm97I9qB7Yv/Cb4UQTeQy8aTDh1mGcc3FyxovPytO5SC0/dZh2SU2CQzq3jn7dhkSNscDG1j2WcAGZO61aL2/tCkjLZShcAKE//pZ54TNol1SEAYvJcnzXU+SbyIIr5/6zC5tsOm1e2f2Xbc0rzpVXlIdvPKXdRkga0/29HotR3cdvPxC32kc30B87fODFBW7cdOsSSIiZT1h+6IjsLLPFlJ9AwzGfqCEXvtQPLw3XAXXIOxqmEuGEsfRIbV8GKwVHZcLvNOjw1XVf4FaLetxxQxxauk/QnnrdAJQgg6x+ds5ih1BUZMWaDcn9UA0EwMwnjtWdDfwkSc9X0AZFzocwUYmWvmwM4KdnK4EyRZMfHO/qSkqS55+ungpPW2qlLv8y4KaxB80Hg4s1d9Lfxojwn8TfeSB7Tdbj0Uj3j8dOfxJ/znDd/0sQeyn/fir650BaqiECfiM3zaLaWfXPgMzwbZ04dZ9rY1er4Hl4CwHEqhpQq8YR1MKX16E7Jlu0ANGge2WcRL2ojO6dzUundnW2toaqEpuJlKF/e9/7i+nWjqJlWqLu3h7+/U9exgW4MRV/j4ElXGJ00gBmM9TGkq98Yt1PsgAinPn/aRz8zKhK9RwqFxR3r8u/kZkkMcQoeaPnO6iRFamY=
+  - secure: pyUd081bpuFaNfAbPm5WbEyG0sC0LoVp3Apst/Oupzx7hQZQyQ7zG05OlTMpDdginaCTGPmQGDSpKxu6QsL8qdkcyx1dXDyp0mwpk0W//rwwPCQajoS5inDKcPnmm9hO+sEp8N8gWkxG3q/g3/ndumi48eN6+/jZDWHvpzn3JroTk1ne5rqFDzmJ0VSAdtiKpU5dtcZWwvBkP5qz+ydzhKhOCsM8nsw65JSmY2INBibRpy4h4djXMAFjSKI08/7v9zXleJRUMqEiIv5bYEJ8X6utTNrigaxztJSZXuguXdiBhsQCyH7opc4dvGqfh262Rfl42ZsOwzVt2smrXIOZayd5bMQ3meNLbvaKnhSUPfKUQtcbKSzqDapDCUN9n03Ja6g5iDAuSWUlQYAVDtpSnF7G4Vl2qCAkHl80d4l+ErQ27ilhob5BD5YyAsKjTvadaAbvrCKEL0wyt8SKkEqSE9BQaDp1C4n4FbPbK21GEgIGuLTl4S0xQm2X4iNtlduu7LP95WbotVoHUtH6+C7kn3i5CexJHqO85LKzPmxzhaCQahYqAEwBcLFxeln33NlSeWsaTdLhWGUX7KtSvWeC1plul/dG/qLxKWxRNsmHJMQktSwz80BbWG2VPd7zUAvbLw+aH2WDfHh4tkcjtjykWSoorYTx5fz6kCU0RMH3U2U=
+script:
+- sudo mkdir /mvnbuild
+- mvn -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -P
+  cloud-integration-tests clean install -Denv.CF_API=$CF_API -Denv.CF_ORGANIZATION=$CF_ORGANIZATION
+  -Denv.CF_SPACE=$CF_SPACE -Denv.CF_USERNAME=$CF_USERNAME -Denv.CF_PASSWORD=$CF_PASSWORD
+- if [ $TRAVIS_TEST_RESULT -eq 0 ]; then chmod +x ./cf_blue_green_travis.sh; sudo
+  add-apt-repository -y ppa:ubuntu-toolchain-r/test; sudo apt-get -qq update; sudo
+  apt-get -qq install g++-4.8; sudo ./cf_blue_green_travis.sh; fi
