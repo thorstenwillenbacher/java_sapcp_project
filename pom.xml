@@ -127,15 +127,7 @@
     </dependencies>
 
     <modules>
-        <module>authentication</module>
-        <module>connectivity</module>
-        <module>document-store</module>
-        <module>explore-ui5</module>
         <module>hello-world</module>
-        <module>mail</module>
-        <module>persistence-with-ejb</module>
-        <module>persistence-with-jdbc</module>
-        <module>websocket</module>
     </modules>
 
     <build>
