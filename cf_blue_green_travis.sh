@@ -27,21 +27,6 @@ popd > /dev/null
 # Second Part: blue-green deployment
 #
 
-# Remove manifest information stored in the temporary directory
-finally ()
-{
-  rm $MANIFEST
-}
-
-# Inform that the deployment has failed for some reason
-on_fail () {
-  finally
-  echo "DEPLOY FAILED - you may need to check 'cf apps' and 'cf routes' and do manual cleanup"
-
-  # Set the Exit code to 1 to denote this as an erroneous Travis build
-  exit 1 
-}
-
 #Store the current path
 CURRENTPATH=$(pwd)
 
@@ -81,5 +66,20 @@ cf delete-route $DOMAIN -n $GREEN -f
 
 # Clean up
 finally
-    
+
 echo "DONE"
+
+# Remove manifest information stored in the temporary directory
+finally ()
+{
+  rm $MANIFEST
+}
+
+# Inform that the deployment has failed for some reason
+on_fail () {
+  finally
+  echo "DEPLOY FAILED - you may need to check 'cf apps' and 'cf routes' and do manual cleanup"
+
+  # Set the Exit code to 1 to denote this as an erroneous Travis build
+  exit 1 
+}
